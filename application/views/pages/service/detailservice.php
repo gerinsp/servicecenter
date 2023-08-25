@@ -144,22 +144,50 @@
                               <input type="hidden" id="id_pelanggan" name="id_pelanggan" value="<?= $data->id_pelanggan ?>">
                               <label class="bmd-label-floating">Status</label>
                               <select class="form-control" name="status" id="status">
-                                 <?php foreach (['Unit Masuk', 'Unit Diagnosis', 'Persiapan', 'Pengerjaan', 'Selesai'] as $key => $value) { ?>
-                                    <?php if (($key + 1) == $data->status) { ?>
-                                       <option value="<?= $key + 1 ?>" selected><?= $value ?></option>
-                                    <?php } else { ?>
-                                       <?php if (($key + 1) < $data->status) { ?>
-                                          <option value="<?= $key + 1 ?>" disabled style="background-color:gainsboro;"><?= $value ?></option>
-                                       <?php } else { ?>
-                                          <option value="<?= $key + 1 ?>"><?= $value ?></option>
-                                       <?php } ?>
-                                    <?php } ?>
+                                 <?php if ($data->status == 1) { ?>
+                                    <option value="1">Unit Masuk</option>
+                                    <option value="2">Unit Diagnosis</option>
+                                    <option value="4" disabled style="background-color:gainsboro;">Pengerjaan</option>
+                                    <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
+                                 <?php } ?>
+
+                                 <?php if ($data->status == 2) { ?>
+                                    <option value="1" disabled style="background-color:gainsboro;">Unit Masuk</option>
+                                    <option value="2">Unit Diagnosis</option>
+                                    <option value="4" disabled style="background-color:gainsboro;">Pengerjaan</option>
+                                    <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
+                                 <?php } ?>
+
+                                 <?php if ($data->status == 3) { ?>
+                                    <option value="1" disabled style="background-color:gainsboro;">Unit Masuk</option>
+                                    <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
+                                    <option value="4">Pengerjaan</option>
+                                    <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
+                                 <?php } ?>
+
+                                 <?php if ($data->status == 4) { ?>
+                                    <option value="1" disabled style="background-color:gainsboro;">Unit Masuk</option>
+                                    <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
+                                    <option value="4">Pengerjaan</option>
+                                    <option value="5">Selesai</option>
+                                 <?php } ?>
+                                 <?php if ($data->status == 5) { ?>
+                                    <option value="1" disabled style="background-color:gainsboro;">Unit Masuk</option>
+                                    <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
+                                    <option value="4" disabled style="background-color:gainsboro;">Pengerjaan</option>
+                                    <option value="5">Selesai</option>
+                                 <?php } ?>
+                                 <?php if ($data->status == 6) { ?>
+                                    <option value="1" disabled style="background-color:gainsboro;">Unit Masuk</option>
+                                    <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
+                                    <option value="4" disabled style="background-color:gainsboro;">Pengerjaan</option>
+                                    <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
                                  <?php } ?>
                               </select>
                            </div>
                         </div>
                         <div class="col-md-4">
-                           <?php if ($data->status == 5) { ?>
+                           <?php if ($data->status == 5 || $data->status == 6) { ?>
                               <button type="submit" class="btn btn-primary" style="margin-top: 32px;" disabled>Simpan</button>
                            <?php } else { ?>
                               <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Simpan</button>
@@ -171,9 +199,6 @@
                            <div class="form-group">
                               <label class="bmd-label-floating" id="label-diag">Diagnosis</label>
                               <textarea class="form-control" name="diagnosis" id="diagnosis" cols="30" rows="5"><?= $data->diagnosis ?></textarea>
-
-                              <label class="bmd-label-floating" id="label-ket">Keterangan</label>
-                              <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="5"><?= $data->persiapan ?></textarea>
 
                            </div>
                         </div>
@@ -193,10 +218,8 @@
 <!-- Function Javascript -->
 <script>
    const ket = document.getElementById('ket'),
-      keterangan = document.getElementById('keterangan'),
       diagnosis = document.getElementById('diagnosis'),
       labeldiag = document.getElementById('label-diag'),
-      labelket = document.getElementById('label-ket'),
       status = document.getElementById('status');
 
    console.log(status.value)
@@ -208,19 +231,10 @@
    if (status.value == 2) {
       diagnosis.style.display = 'block'
       labeldiag.style.display = 'block'
-      keterangan.style.display = 'none'
-      labelket.style.display = 'none'
-   }
-
-   if (status.value == 3) {
-      diagnosis.style.display = 'none'
-      labeldiag.style.display = 'none'
-      keterangan.style.display = 'block'
-      labelket.style.display = 'block'
    }
    status.addEventListener('change', () => {
       console.log(status.value)
-      if (status.value == 2 || status.value == 3) {
+      if (status.value == 2) {
          ket.style.display = 'block'
          if (status.value == 2) {
             diagnosis.style.display = 'block'
@@ -228,16 +242,6 @@
             diagnosis.required = true
             labeldiag.innerText = 'Diagnosis'
             diagnosis.value = '<?= $data->diagnosis ?>'
-            keterangan.style.display = 'none'
-            labelket.style.display = 'none'
-         } else if (status.value == 3) {
-            keterangan.required = true
-            keterangan.style.display = 'block'
-            labelket.style.display = 'block'
-            labelket.innerText = 'Keterangan'
-            keterangan.value = '<?= $data->persiapan ?>'
-            diagnosis.style.display = 'none'
-            labeldiag.style.display = 'none'
          }
       } else {
          ket.style.display = 'none'

@@ -131,39 +131,53 @@
                               <input type="hidden" name="diagnosis" value="<?= $data->diagnosis ?>">
                               <label class="bmd-label-floating">Status</label>
                               <select class="form-control" name="status" id="status">
-                                 <?php if ($data->status != 5 && $data->status != 2) { ?>
+                                 <?php if ($data->status != 5 && $data->status != 2 && $data->status != 3) { ?>
                                     <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
+                                    <option value="3" disabled style="background-color:gainsboro;">Persiapan</option>
+                                    <option value="6" disabled style="background-color:gainsboro;">Batal Service</option>
                                     <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
                                  <?php } elseif ($data->status == 2) { ?>
                                     <option value="2">Unit Diagnosis</option>
+                                    <option value="3">Persiapan</option>
+                                    <option value="6">Batal Service</option>
+                                    <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
+                                 <?php } elseif ($data->status == 3) { ?>
+                                    <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
+                                    <option value="3">Persiapan</option>
+                                    <option value="6" disabled style="background-color:gainsboro;">Batal Service</option>
                                     <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
                                  <?php } else { ?>
-                                    <option value="5">Selesai</option>
                                     <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
+                                    <option value="3" disabled style="background-color:gainsboro;">Persiapan</option>
+                                    <option value="6" disabled style="background-color:gainsboro;">Batal Service</option>
+                                    <option value="5">Selesai</option>
                                  <?php } ?>
                               </select>
                            </div>
                         </div>
                         <div class="col-md-4">
-                           <?php if ($data->status != 5 && $data->status != 2) { ?>
+                           <?php if ($data->status != 5 && $data->status != 2 && $data->status != 3) { ?>
                               <button type="submit" class="btn btn-primary" style="margin-top: 32px;" disabled>Simpan</button>
                            <?php } elseif ($data->status == 2) { ?>
-                              <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Kirim WA</button>
+                              <button type="submit" id="btn-wa" class="btn btn-primary" style="margin-top: 32px;">Kirim WA</button>
                            <?php } else { ?>
                               <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Kirim WA</button>
                            <?php } ?>
                         </div>
                      </div>
-                     <?php if ($data->status == 2) { ?>
+
+                     <?php if ($data->status == 2 || $data->status == 3) { ?>
                         <div class="row mb-4 " id="ket">
                            <div class="col-md-4">
                               <div class="form-group">
                                  <label class="bmd-label-floating" id="label-diag">Diagnosis</label>
                                  <textarea class="form-control" id="diagnosis" cols="30" rows="5" disabled><?= $data->diagnosis ?></textarea>
-
+                                 <label class="bmd-label-floating" id="label-ket">Keterangan</label>
+                                 <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="5"><?= $data->persiapan ?></textarea>
                               </div>
                            </div>
-                        </div><?php } ?>
+                        </div>
+                     <?php } ?>
                   </form>
                <?php } ?>
                <a href="<?= base_url('listpelanggan'); ?>" class="btn btn-danger" role="button" title="Kembali"> <?php echo $this->lang->line('back'); ?> </a>
@@ -178,5 +192,45 @@
 
 <!-- Function Javascript -->
 <script>
+   const btnWA = document.getElementById('btn-wa');
+   const status = document.getElementById('status')
+   const labelDiag = document.getElementById('label-diag')
+   const labelKet = document.getElementById('label-ket')
+   const diagnosis = document.getElementById('diagnosis')
+   const keterangan = document.getElementById('keterangan')
+
+   if (status.value == 2) {
+      labelKet.style.display = 'none'
+      keterangan.style.display = 'none'
+   }
+
+   if (status.value == 3) {
+      labelDiag.style.display = 'none'
+      diagnosis.style.display = 'none'
+   }
+
+   status.addEventListener('change', () => {
+      if (status.value == 6) {
+         btnWA.innerText = 'Simpan'
+         labelDiag.style.display = 'none'
+         diagnosis.style.display = 'none'
+         labelKet.style.display = 'none'
+         keterangan.style.display = 'none'
+      } else if (status.value == 2) {
+         btnWA.innerText = 'Kirim WA'
+         labelDiag.style.display = 'block'
+         diagnosis.style.display = 'block'
+         labelKet.style.display = 'none'
+         keterangan.style.display = 'none'
+      } else if (status.value == 3) {
+         btnWA.innerText = 'Simpan'
+         labelDiag.style.display = 'none'
+         diagnosis.style.display = 'none'
+
+         labelKet.style.display = 'block'
+         keterangan.style.display = 'block'
+      }
+
+   })
 </script>
 <!-- End Function Javascript -->

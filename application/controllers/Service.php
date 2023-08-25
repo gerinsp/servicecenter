@@ -141,6 +141,9 @@ class Service extends CI_Controller
          if ($role_id == 2) {
             $this->sendMessageToWa($id_pelanggan, $status);
          }
+      } elseif ($status == 3 || $status == 6) {
+         $this->session->set_flashdata('success', 'Anda berhasil melakukan update status.');
+         redirect('listpelanggan');
       } else {
          $this->session->set_flashdata('success', 'Anda berhasil melakukan update status.');
          redirect('listservice');

@@ -65,6 +65,9 @@
                                  if ($data->status == "5") {
                                     $st = "Selesai";
                                  }
+                                 if ($data->status == "6") {
+                                    $st = "Batal Service";
+                                 }
                               ?>
                                  <tr id="pelanggan<?= $data->id_pelanggan ?>">
                                     <td style="vertical-align: top;border-top: 1px solid #e3e6f0;" width="5%"><?php echo $no ?></td>
@@ -85,6 +88,9 @@
                                     <?php }
                                     if ($st == "Selesai") { ?>
                                        <td style="vertical-align: top;border-top: 1px solid #e3e6f0;color:green" width="20%"><?php echo $st ?></td>
+                                    <?php }
+                                    if ($st == "Batal Service") { ?>
+                                       <td style="vertical-align: top;border-top: 1px solid #e3e6f0;color:red" width="20%"><?php echo $st ?></td>
                                     <?php }  ?>
                                     <td style="vertical-align: top;border-top: 1px solid #e3e6f0;" width="20%">
                                        <textarea style="padding-top: 0px;text-align:justify; padding:0px;font-size: 18px;width:500px;background: transparent; border: none;font-size: 18px;overflow:hidden;color:black" class="keluhanringkas" disabled rows="3"><?= substr($data->keluhan, 0, 100) ?>...</textarea>
