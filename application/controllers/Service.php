@@ -109,6 +109,8 @@ class Service extends CI_Controller
       $ket = $this->input->post('keterangan');
       $diag = $this->input->post('diagnosis');
       $status = $this->input->post('status');
+      $batal = $this->input->post('ket_batal');
+      $biaya = $this->input->post('biaya');
 
       $table = 'barang';
       $where = array(
@@ -117,12 +119,18 @@ class Service extends CI_Controller
       if ($status == 2) {
          $data = array(
             'status'                       =>   $status,
-            'diagnosis'                    =>   $diag
+            'diagnosis'                    =>   $diag,
+            'biaya'                        =>   $biaya
          );
       } elseif ($status == 3) {
          $data = array(
             'status'                       =>   $status,
             'persiapan'                    =>   $ket
+         );
+      } elseif ($status == 6) {
+         $data = array(
+            'status'                       =>   $status,
+            'ket_batal'                    =>   $batal
          );
       } else {
          $data = array(
@@ -171,9 +179,10 @@ class Service extends CI_Controller
       $merk_laptop = $data_service->merklaptop;
       $keluhan = $data_service->keluhan;
       $diagnosis = $data_service->diagnosis;
+      $biaya = $data_service->biaya;
 
       if ($status == 2) {
-         $template = 'Halo ' . $this->pesanSelamat() . ' kak, %0A%0Aberikut adalah hasil diagnosis service laptop Anda dengan keterangan sebagai berikut: %0ANomor Service:%20' . $no_service . '%0ANama Pelanggan:%20' . $nama_pelanggan . '%0AMerk Laptop:%20' . $merk_laptop . '%0AKeluhan:%20' . $keluhan . '%0AHasil Diagnosis:%20' . $diagnosis . '%0A%0AApakah anda bersedia untuk melanjutkan te tahap pengerjaan?.';
+         $template = 'Halo ' . $this->pesanSelamat() . ' kak, %0A%0Aberikut adalah hasil diagnosis service laptop Anda dengan keterangan sebagai berikut: %0ANomor Service:%20' . $no_service . '%0ANama Pelanggan:%20' . $nama_pelanggan . '%0AMerk Laptop:%20' . $merk_laptop . '%0AKeluhan:%20' . $keluhan . '%0AHasil Diagnosis:%20' . $diagnosis .  '%0ABiaya Service:%20' . 'Rp.' . number_format($biaya, 0, ',', '.') . '%0A%0AApakah anda bersedia untuk melanjutkan te tahap pengerjaan?.';
       } else {
          $template = 'Halo ' . $this->pesanSelamat() . ' kak, %0A%0AHasil service laptop Anda dengan keterangan sebagai berikut: %0ANomor Service:%20' . $no_service . '%0ANama Pelanggan:%20' . $nama_pelanggan . '%0AMerk Laptop:%20' . $merk_laptop . '%0AKeluhan:%20' . $keluhan . '%0AHasil Diagnosis:%20' . $diagnosis . '%0A%0ATelah selesai dikerjakan. Silakan datang untuk mengambil laptop Anda. Terima kasih telah mempercayakan service laptop Anda kepada kami.';
       }

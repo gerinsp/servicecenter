@@ -131,7 +131,7 @@
                               <input type="hidden" name="diagnosis" value="<?= $data->diagnosis ?>">
                               <label class="bmd-label-floating">Status</label>
                               <select class="form-control" name="status" id="status">
-                                 <?php if ($data->status != 5 && $data->status != 2 && $data->status != 3) { ?>
+                                 <?php if ($data->status != 5 && $data->status != 2 && $data->status != 3 && $data->status != 6) { ?>
                                     <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
                                     <option value="3" disabled style="background-color:gainsboro;">Persiapan</option>
                                     <option value="6" disabled style="background-color:gainsboro;">Batal Service</option>
@@ -145,6 +145,11 @@
                                     <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
                                     <option value="3">Persiapan</option>
                                     <option value="6" disabled style="background-color:gainsboro;">Batal Service</option>
+                                    <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
+                                 <?php } elseif ($data->status == 6) { ?>
+                                    <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
+                                    <option value="3" disabled style="background-color:gainsboro;">Persiapan</option>
+                                    <option value="6">Batal Service</option>
                                     <option value="5" disabled style="background-color:gainsboro;">Selesai</option>
                                  <?php } else { ?>
                                     <option value="2" disabled style="background-color:gainsboro;">Unit Diagnosis</option>
@@ -166,7 +171,15 @@
                         </div>
                      </div>
 
-                     <?php if ($data->status == 2 || $data->status == 3) { ?>
+                     <?php if ($data->status == 2 || $data->status == 3 || $data->status == 6) { ?>
+                        <div class="row mb-4 " id="biaya">
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label class="bmd-label-floating" id="label-biaya">Biaya Service</label>
+                                 <input type="number" value="<?= $data->biaya ?>" class="form-control" id="input-biaya" name="biaya">
+                              </div>
+                           </div>
+                        </div>
                         <div class="row mb-4 " id="ket">
                            <div class="col-md-4">
                               <div class="form-group">
@@ -174,6 +187,8 @@
                                  <textarea class="form-control" id="diagnosis" cols="30" rows="5" disabled><?= $data->diagnosis ?></textarea>
                                  <label class="bmd-label-floating" id="label-ket">Keterangan</label>
                                  <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="5"><?= $data->persiapan ?></textarea>
+                                 <label class="bmd-label-floating" id="label-ket-batal">Keterangan Batal</label>
+                                 <textarea class="form-control" name="ket_batal" id="ket-batal" cols="30" rows="5"><?= $data->ket_batal ?></textarea>
                               </div>
                            </div>
                         </div>
@@ -198,15 +213,33 @@
    const labelKet = document.getElementById('label-ket')
    const diagnosis = document.getElementById('diagnosis')
    const keterangan = document.getElementById('keterangan')
+   const biaya = document.getElementById('biaya')
+   const labelKetBatal = document.getElementById('label-ket-batal')
+   const ketBatal = document.getElementById('ket-batal')
 
    if (status.value == 2) {
       labelKet.style.display = 'none'
       keterangan.style.display = 'none'
+      labelKetBatal.style.display = 'none'
+      ketBatal.style.display = 'none'
    }
 
    if (status.value == 3) {
       labelDiag.style.display = 'none'
       diagnosis.style.display = 'none'
+      biaya.style.display = 'none'
+      labelKetBatal.style.display = 'none'
+      ketBatal.style.display = 'none'
+   }
+
+   console.log(status.value)
+   if (status.value == 6) {
+      labelDiag.style.display = 'none'
+      diagnosis.style.display = 'none'
+      biaya.style.display = 'none'
+      labelKetBatal.style.display = 'none'
+      labelKet.style.display = 'none'
+      keterangan.style.display = 'none'
    }
 
    status.addEventListener('change', () => {
@@ -216,17 +249,27 @@
          diagnosis.style.display = 'none'
          labelKet.style.display = 'none'
          keterangan.style.display = 'none'
+         labelKetBatal.style.display = 'block'
+         ketBatal.style.display = 'block'
+
+         biaya.style.display = 'none'
       } else if (status.value == 2) {
          btnWA.innerText = 'Kirim WA'
          labelDiag.style.display = 'block'
          diagnosis.style.display = 'block'
          labelKet.style.display = 'none'
          keterangan.style.display = 'none'
+         biaya.style.display = 'block'
+         labelKetBatal.style.display = 'none'
+         ketBatal.style.display = 'none'
       } else if (status.value == 3) {
          btnWA.innerText = 'Simpan'
          labelDiag.style.display = 'none'
          diagnosis.style.display = 'none'
 
+         labelKetBatal.style.display = 'none'
+         ketBatal.style.display = 'none'
+         biaya.style.display = 'none'
          labelKet.style.display = 'block'
          keterangan.style.display = 'block'
       }
